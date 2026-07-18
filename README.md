@@ -4,10 +4,10 @@
 QuickChat
 A lightweight real-time chat application built with a React frontend and Firebase backend.
 
-Project Overview
+## Project Overview ##
 QuickChat is a simple and modern messaging app designed for quick communication and real-time conversations. The project consists of a React-based frontend for users to interact with chat rooms and a Firebase-powered backend for authentication, message storage, and live updates.
 
-Project Structure
+## Project Structure ##
 Frontend (React)
 React.js
 TypeScript
@@ -18,21 +18,21 @@ Backend / Services
 Firebase Authentication
 Firestore Database
 Real-time message syncing
-Tech Stack
-Frontend
+## Tech Stack ##
+## Frontend ##
 React
 TypeScript
 Vite
 CSS / component-based UI
-Backend / Services
+## Backend / Services ##
 Firebase Auth
 Firestore
 Real-time database support
 Getting Started
 Frontend Setup
-Runs on: http://localhost:5173
+## Runs on: http://localhost:5173 ##
 
-Key Features
+## Key Features ##
 User authentication
 Create and view chat rooms
 Send and receive real-time messages
