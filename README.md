@@ -1,20 +1,43 @@
 <div align="center">
 <img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
 </div>
+QuickChat
+A lightweight real-time chat application built with a React frontend and Firebase backend.
 
-# Run and deploy your AI Studio app
+Project Overview
+QuickChat is a simple and modern messaging app designed for quick communication and real-time conversations. The project consists of a React-based frontend for users to interact with chat rooms and a Firebase-powered backend for authentication, message storage, and live updates.
 
-This contains everything you need to run your app locally.
+Project Structure
+Frontend (React)
+React.js
+TypeScript
+Vite
+Tailwind-style UI components
+Firebase integration
+Backend / Services
+Firebase Authentication
+Firestore Database
+Real-time message syncing
+Tech Stack
+Frontend
+React
+TypeScript
+Vite
+CSS / component-based UI
+Backend / Services
+Firebase Auth
+Firestore
+Real-time database support
+Getting Started
+Frontend Setup
+Runs on: http://localhost:5173
 
-View your app in AI Studio: https://ai.studio/apps/99d66e66-6a86-442f-bfa9-cc60099d8be8
+Key Features
+User authentication
+Create and view chat rooms
+Send and receive real-time messages
+Persistent chat history
+Clean and responsive user interface
+Overview
+QuickChat provides a simple chat experience with a modern UI and Firebase-powered backend. It is ideal for learning real-time app development, prototyping messaging features, or building a lightweight chat-based application.
 
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
