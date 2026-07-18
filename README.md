@@ -1,44 +1,65 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
-QuickChat
-A lightweight real-time chat application built with a React frontend and Firebase backend.
+# QuickChat
 
-## Project Overview ##
-QuickChat is a simple and modern messaging app designed for quick communication and real-time conversations. The project consists of a React-based frontend for users to interact with chat rooms and a Firebase-powered backend for authentication, message storage, and live updates.
+A lightweight real-time chat application built with React, TypeScript, and Firebase.
 
-## Project Structure ##
-Frontend (React)
-React.js
-TypeScript
-Vite
-Tailwind-style UI components
-Firebase integration
-Backend / Services
-Firebase Authentication
-Firestore Database
-Real-time message syncing
+## Project Overview
 
-## Tech Stack ##
-## Frontend ##
-- React
+QuickChat is a modern and simple messaging app designed for fast conversations, real-time updates, and a clean user experience. The project provides a React-based frontend where users can sign in, view chat rooms, and send messages while Firebase handles authentication and persistent chat data.
+
+## Project Structure
+
+```text
+src/
+├── components/        # Reusable UI components
+│   ├── Auth.tsx
+│   ├── ChatList.tsx
+│   ├── ChatRoom.tsx
+│   └── NewChatDialog.tsx
+├── lib/               # Firebase and utility helpers
+├── types.ts           # App data types
+├── App.tsx            # Main application component
+└── main.tsx           # Entry point
+```
+
+## Tech Stack
+
+### Frontend
+- React.js
 - TypeScript
 - Vite
-- CSS / component-based UI
-## Backend / Services ##
-- Firebase Auth
-- Firestore
-- Real-time database support
-- Getting Started
-- Frontend Setup
-## Runs on: http://localhost:5173 ##
+- Tailwind-style UI components
+- Firebase SDK
 
-## Key Features ##
+### Backend / Services
+- Firebase Authentication
+- Firestore Database
+- Real-time data syncing
+
+## Getting Started
+
+### Prerequisites
+- Node.js
+- npm
+
+### Installation
+```bash
+npm install
+```
+
+### Run the app
+```bash
+npm run dev
+```
+
+Runs on: http://localhost:3000
+
+## Key Features
 - User authentication
-- Create and view chat rooms
+- Create and manage chat rooms
 - Send and receive real-time messages
 - Persistent chat history
-- Clean and responsive user interface
-## Overview ##
-QuickChat provides a simple chat experience with a modern UI and Firebase-powered backend. It is ideal for learning real-time app development, prototyping messaging features, or building a lightweight chat-based application.
+- Responsive and modern UI
 
+## Overview
+
+QuickChat provides a simple yet scalable chat experience for learning, prototyping, or building lightweight messaging applications. It combines a fast React frontend with Firebase services to deliver a smooth and interactive real-time experience.
