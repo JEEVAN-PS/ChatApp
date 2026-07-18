@@ -18,26 +18,27 @@ Backend / Services
 Firebase Authentication
 Firestore Database
 Real-time message syncing
+
 ## Tech Stack ##
 ## Frontend ##
-React
-TypeScript
-Vite
-CSS / component-based UI
+- React
+- TypeScript
+- Vite
+- CSS / component-based UI
 ## Backend / Services ##
-Firebase Auth
-Firestore
-Real-time database support
-Getting Started
-Frontend Setup
+- Firebase Auth
+- Firestore
+- Real-time database support
+- Getting Started
+- Frontend Setup
 ## Runs on: http://localhost:5173 ##
 
 ## Key Features ##
-User authentication
-Create and view chat rooms
-Send and receive real-time messages
-Persistent chat history
-Clean and responsive user interface
-Overview
+- User authentication
+- Create and view chat rooms
+- Send and receive real-time messages
+- Persistent chat history
+- Clean and responsive user interface
+## Overview ##
 QuickChat provides a simple chat experience with a modern UI and Firebase-powered backend. It is ideal for learning real-time app development, prototyping messaging features, or building a lightweight chat-based application.
 
