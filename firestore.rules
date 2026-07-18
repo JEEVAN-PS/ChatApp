@@ -1,0 +1,123 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: userId (UID)
+    // Fields:
+    //   - uid: string (required)
+    //   - displayName: string (optional)
+    //   - email: string (required)
+    //   - photoURL: string (optional)
+    //   - lastSeen: timestamp (optional)
+    //   - isOnline: bool (optional)
+    //
+    // Collection: chats
+    // Document ID: chatId
+    // Fields:
+    //   - type: string ('private' | 'group')
+    //   - name: string (optional, for groups)
+    //   - participants: list<string> (UIDs)
+    //   - lastMessage: map (optional)
+    //   - createdAt: timestamp
+    //
+    // Collection: chats/{chatId}/messages
+    // Document ID: messageId
+    // Fields:
+    //   - chatId: string
+    //   - senderId: string
+    //   - text: string
+    //   - timestamp: timestamp
+    //   - type: string ('text' | 'image')
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isParticipant(participants) {
+      return isAuthenticated() && request.auth.uid in participants;
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email']) &&
+             data.uid is string &&
+             data.email is string &&
+             (!('displayName' in data) || data.displayName == null || (data.displayName is string && data.displayName.size() < 100)) &&
+             (!('photoURL' in data) || data.photoURL == null || (data.photoURL is string && data.photoURL.size() < 500)) &&
+             (!('isOnline' in data) || data.isOnline is bool) &&
+             (!('lastSeen' in data) || data.lastSeen is timestamp);
+    }
+
+    function isValidChat(data) {
+      return data.keys().hasAll(['type', 'participants', 'createdAt']) &&
+             data.type in ['private', 'group'] &&
+             data.participants is list &&
+             data.participants.size() >= 2 &&
+             data.participants.size() <= 100 &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidMessage(data, isCreate) {
+      return data.keys().hasAll(['chatId', 'senderId', 'timestamp']) &&
+             data.chatId is string &&
+             (isCreate ? (data.senderId == request.auth.uid || data.senderId == 'ai_bot') : data.senderId is string) &&
+             (!('text' in data) || data.text == null || (data.text is string && data.text.size() <= 16000)) &&
+             (!('imageUrl' in data) || data.imageUrl == null || (data.imageUrl is string && data.imageUrl.size() <= 1000000)) &&
+             (!('audioUrl' in data) || data.audioUrl == null || (data.audioUrl is string && data.audioUrl.size() <= 1000000)) &&
+             (!('documentUrl' in data) || data.documentUrl == null || (data.documentUrl is string && data.documentUrl.size() <= 1000000)) &&
+             (!('fileName' in data) || data.fileName == null || (data.fileName is string && data.fileName.size() <= 200)) &&
+             (!('fileSize' in data) || data.fileSize == null || (data.fileSize is number)) &&
+             (!('status' in data) || data.status in ['sent', 'delivered', 'read']) &&
+             (!('type' in data) || data.type in ['text', 'image', 'audio', 'document']) &&
+             (!('replyTo' in data) || data.replyTo is map) &&
+             (!('reactions' in data) || data.reactions is map) &&
+             (!('isDeleted' in data) || data.isDeleted is bool) &&
+             (!('deletedFor' in data) || data.deletedFor is list) &&
+             data.timestamp is timestamp;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      // Allow the system to safely seed the ai_bot user
+      allow create: if (isOwner(userId) || userId == 'ai_bot') && isValidUser(request.resource.data);
+      allow update: if (isOwner(userId) || userId == 'ai_bot') && isValidUser(request.resource.data);
+    }
+
+    match /chats/{chatId} {
+      allow read: if isAuthenticated() && isParticipant(resource.data.participants);
+      allow create: if isAuthenticated() && isParticipant(request.resource.data.participants) && isValidChat(request.resource.data);
+      allow update: if isAuthenticated() && isParticipant(resource.data.participants) && isValidChat(request.resource.data);
+      
+      match /messages/{messageId} {
+        allow read: if isAuthenticated() && isParticipant(get(/databases/$(database)/documents/chats/$(chatId)).data.participants);
+        allow create: if isAuthenticated() && isParticipant(get(/databases/$(database)/documents/chats/$(chatId)).data.participants) && isValidMessage(request.resource.data, true);
+        allow update: if isAuthenticated() && isParticipant(get(/databases/$(database)/documents/chats/$(chatId)).data.participants) && 
+                      (
+                        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']) && request.resource.data.status in ['delivered', 'read']) ||
+                        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reactions'])) ||
+                        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isDeleted', 'text', 'imageUrl']) && resource.data.senderId == request.auth.uid) ||
+                        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['deletedFor']))
+                      );
+      }
+    }
+  }
+}

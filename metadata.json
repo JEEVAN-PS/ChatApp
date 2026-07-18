@@ -1,0 +1,6 @@
+{
+  "name": "QuickChat",
+  "description": "A real-time WhatsApp-like chat application with private and group messaging.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
